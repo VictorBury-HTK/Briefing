@@ -133,7 +133,7 @@ export default function DeepDiveBriefing() {
   };
 
   return (
-    <div style={{minHeight:'100vh', background:'#071A3E', padding:'2rem', fontFamily: 'Inter, system-ui, sans-serif', color:'#0f172a'}}>
+    <div style={{minHeight:'100vh', background:'#0B2B5A', padding:'2rem', fontFamily: 'Inter, system-ui, sans-serif', color:'#0f172a'}}>
       <div style={{maxWidth:1024, margin:'0 auto', background:'#fff', borderRadius:20, overflow:'hidden', boxShadow:'0 20px 50px rgba(2,6,23,0.08)'}}>
         <header style={{background:'#0f172a', color:'#fff', padding:'2rem'}}>
           <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
