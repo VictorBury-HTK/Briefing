@@ -65,7 +65,7 @@ const MissingModal = ({ open, missing, onClose, onJump }) => {
           {missing.map((m, idx) => (
             <li key={m.key} style={{marginBottom:10, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
               <span>{idx+1}. {m.label}</span>
-              <button className="link-btn" onClick={() => onJump(m.selectorId)}>Ir para</button>
+              <button className="link-btn" onClick={() => { onClose(); onJump(m.selectorId); }}>Ir para</button>
             </li>
           ))}
         </ul>
@@ -142,7 +142,6 @@ export default function DeepDiveBriefing() {
       { key: 'nome', label: 'Nome do Cliente / Família', selectorId: 'field-nome' },
       { key: 'cafeDaManha', label: 'Rotina de Café da Manhã', selectorId: 'section-rotina' },
       { key: 'quemCozinha', label: 'Quem cozinha?', selectorId: 'section-rotina' },
-      { key: 'rotinaFuncionaria', label: 'Rotina da Funcionária', selectorId: 'section-rotina' },
       { key: 'integra', label: 'Nível de Integração com Sala', selectorId: 'section-rotina' },
       { key: 'tomPedra', label: 'Tonalidade das Bancadas (Pedras)', selectorId: 'section-materiais' },
       { key: 'tomMarcenaria', label: 'Cores da Marcenaria', selectorId: 'section-materiais' },
@@ -169,14 +168,19 @@ export default function DeepDiveBriefing() {
   const attemptExport = (action) => {
     const missing = validateForExport();
     if (missing.length) {
-        // set missing fields state for UI highlighting and open modal
-        setMissingFields(missing.map(m => m.key));
-        setModalOpen(true);
-        setModalItems(missing);
-        // scroll to first missing section header so modal isn't behind it
+        // scroll to first missing section header before opening modal
         const first = missing[0];
         const el = document.getElementById(first.selectorId);
-        if (el && typeof el.scrollIntoView === 'function') el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (el && typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const focusable = el.querySelector && el.querySelector('input, textarea, button, [tabindex]');
+          if (focusable && typeof focusable.focus === 'function') focusable.focus();
+        }
+
+        // set missing fields state for UI highlighting and open modal
+        setMissingFields(missing.map(m => m.key));
+        setModalItems(missing);
+        setTimeout(() => setModalOpen(true), 150);
         return;
       }
     if (action === 'print') {
@@ -272,7 +276,7 @@ export default function DeepDiveBriefing() {
           </div>
         </Section>
 
-        <Section id="section-rotina" hasMissing={missingFields.some(k => ['cafeDaManha','quemCozinha','rotinaFuncionaria','integra'].includes(k))} icon={ChefHat} title="Rotina & Fluxo" subtitle="Como a casa funciona no dia a dia?" isOpen={sections.rotina} toggle={() => toggleSection('rotina')}>
+        <Section id="section-rotina" hasMissing={missingFields.some(k => ['cafeDaManha','quemCozinha','integra'].includes(k))} icon={ChefHat} title="Rotina & Fluxo" subtitle="Como a casa funciona no dia a dia?" isOpen={sections.rotina} toggle={() => toggleSection('rotina')}>
           <RadioGroup label="1. Rotina de Café da Manhã" selected={formData.cafeDaManha} onChange={(val) => setFormData({...formData, cafeDaManha: val})} options={[{ value: 'mesa', label: 'Todos sentados à mesa juntos' },{ value: 'fluxo', label: 'Horários diferentes (fluxo rápido)' },{ value: 'balcao', label: 'Rápido/Em pé no balcão' },{ value: 'nao_toma', label: 'Não tomamos café em casa' }]} />
           <RadioGroup label="2. Quem cozinha?" selected={formData.quemCozinha} onChange={(val) => setFormData({...formData, quemCozinha: val})} options={[{ value: 'gourmet', label: 'Eu/Cônjuge (Pratos elaborados/Hobby)' },{ value: 'basico', label: 'Eu/Cônjuge (Apenas o básico/rápido)' },{ value: 'funcionaria', label: 'Funcionária/Cozinheira (Diariamente)' },{ value: 'misto', label: 'Misto (Funcionária + Família no fds)' }]} />
 
