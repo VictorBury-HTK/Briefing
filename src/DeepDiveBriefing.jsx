@@ -94,7 +94,7 @@ const CheckboxGroup = ({ label, options, selected, onChange, maxSelection }) => 
 );
 
 export default function DeepDiveBriefing() {
-  const [sections, setSections] = useState({ rotina: true, materiais: true, copa: true, funcional: true, tech: true, estilo: true });
+  const [sections, setSections] = useState({ estilo: true, rotina: true, materiais: true, copa: true, funcional: true, tech: true });
   const [formData, setFormData] = useState({
     nome: '', cafeDaManha: '', quemCozinha: '', rotinaFuncionaria: '', integra: '', tomPedra: '', tomMarcenaria: [], tipoVidro: '', tomEletros: '', assentosCopa: '', tvCopa: '', tipoAssento: '', lixeira: '', escorredor: '', janelas: '', iluminacao: [], automacao: '', estiloVisual: ''
   });
@@ -147,19 +147,36 @@ export default function DeepDiveBriefing() {
           </div>
         </header>
 
-        <Section icon={ChefHat} title="Dinâmica da Casa" subtitle="Fluxo de pessoas e uso real do espaço" isOpen={sections.rotina} toggle={() => toggleSection('rotina')}>
+        <Section icon={ImageIcon} title="Identidade Visual (Arquétipos)" subtitle="Qual destas cozinhas faz seu coração bater mais forte?" isOpen={sections.estilo} toggle={() => toggleSection('estilo')}>
+          <div className="visual-grid">
+            {styles.map((style) => (
+              <div key={style.id} className={`visual-card ${formData.estiloVisual === style.id ? 'selected' : ''}`} onClick={() => setFormData({...formData, estiloVisual: style.id})}>
+                <div className="visual-img-container">
+                  <img className="visual-img" src={style.img} alt={style.title} />
+                  {formData.estiloVisual === style.id && <div style={{position:'absolute', top:12, right:12, background:'#2563eb', color:'#fff', padding:6, borderRadius:999}}><Check size={18} color="#fff" /></div>}
+                </div>
+                <div style={{padding:12}}>
+                  <h3 style={{fontWeight:700, marginBottom:6}} className="text-slate-900">{style.title}</h3>
+                  <p className="text-slate-400" style={{fontSize:13, lineHeight:1.2}}>{style.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section icon={ChefHat} title="Rotina & Fluxo" subtitle="Como a casa funciona no dia a dia?" isOpen={sections.rotina} toggle={() => toggleSection('rotina')}>
           <RadioGroup label="1. Rotina de Café da Manhã" selected={formData.cafeDaManha} onChange={(val) => setFormData({...formData, cafeDaManha: val})} options={[{ value: 'mesa', label: 'Todos sentados à mesa juntos' },{ value: 'fluxo', label: 'Horários diferentes (fluxo rápido)' },{ value: 'balcao', label: 'Rápido/Em pé no balcão' },{ value: 'nao_toma', label: 'Não tomamos café em casa' }]} />
           <RadioGroup label="2. Quem cozinha?" selected={formData.quemCozinha} onChange={(val) => setFormData({...formData, quemCozinha: val})} options={[{ value: 'gourmet', label: 'Eu/Cônjuge (Pratos elaborados/Hobby)' },{ value: 'basico', label: 'Eu/Cônjuge (Apenas o básico/rápido)' },{ value: 'funcionaria', label: 'Funcionária/Cozinheira (Diariamente)' },{ value: 'misto', label: 'Misto (Funcionária + Família no fds)' }]} />
 
           <div style={{marginBottom:24}}>
-            <h3 style={{fontSize:13, fontWeight:700, color:'#0f172a', marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}}>3. Rotina da Funcionária (Se houver)</h3>
-            <textarea rows={3} placeholder="Descreva necessidades específicas: Ela almoça na cozinha? Precisa de TV? Precisa de bancada de apoio separada?" value={formData.rotinaFuncionaria} onChange={(e) => setFormData({...formData, rotinaFuncionaria: e.target.value})} style={{width:'100%', padding:12, border:'1px solid #e6eef6', borderRadius:8, fontSize:13}} />
+            <h3 style={{fontSize:13, fontWeight:700, marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}} className="text-slate-900">Rotina da Funcionária (Se houver)</h3>
+            <textarea rows={3} placeholder="Descreva necessidades específicas: Ela almoça na cozinha? Precisa de TV? Precisa de bancada de apoio separada?" value={formData.rotinaFuncionaria} onChange={(e) => setFormData({...formData, rotinaFuncionaria: e.target.value})} className="textarea" />
           </div>
 
-          <RadioGroup label="4. Nível de Integração com Sala" selected={formData.integra} onChange={(val) => setFormData({...formData, integra: val})} options={[{ value: 'total', label: '100% Aberta (Conceito Americano)', desc: 'Cheiros/Barulhos não incomodam' },{ value: 'flexivel', label: 'Integrável (Portas de correr)', desc: 'Posso fechar quando necessário' },{ value: 'fechada', label: 'Fechada (Privacidade total)', desc: 'Isolamento de odores é prioridade' }]} />
+          <RadioGroup label="Nível de Integração com Sala" selected={formData.integra} onChange={(val) => setFormData({...formData, integra: val})} options={[{ value: 'total', label: '100% Aberta (Conceito Americano)', desc: 'Cheiros/Barulhos não incomodam' },{ value: 'flexivel', label: 'Integrável (Portas de correr)', desc: 'Posso fechar quando necessário' },{ value: 'fechada', label: 'Fechada (Privacidade total)', desc: 'Isolamento de odores é prioridade' }]} />
         </Section>
 
-        <Section icon={Palette} title="Materiais & Acabamentos" subtitle="Tonalidades, pedras e texturas" isOpen={sections.materiais} toggle={() => toggleSection('materiais')}>
+        <Section icon={Palette} title="Materiais & Acabamentos" subtitle="Tonalidades, pedras, vidros e metais" isOpen={sections.materiais} toggle={() => toggleSection('materiais')}>
           <RadioGroup label="5. Tonalidade das Bancadas (Pedras)" selected={formData.tomPedra} onChange={(val) => setFormData({...formData, tomPedra: val})} layout="grid" options={[{ value: 'branca', label: 'Branca / Claríssima', desc: 'Quartzo Branco, Mármore Paraná', color: '#f8f9fa' },{ value: 'cinza', label: 'Cinza / Concreto', desc: 'Gris, Cimento Queimado', color: '#adb5bd' },{ value: 'preta', label: 'Escura / Preta', desc: 'São Gabriel, Via Láctea, Dekton', color: '#212529' },{ value: 'exotica', label: 'Veios Marcantes / Exótica', desc: 'Calacatta, Mármores desenhados', color: '#e9ecef' }]} />
 
           <CheckboxGroup label="6. Cores da Marcenaria (Selecione até 2 favoritos)" selected={formData.tomMarcenaria} onChange={(val) => setFormData({...formData, tomMarcenaria: val})} maxSelection={2} options={[{ value: 'branco', label: 'Branco Clássico', desc: 'Amplitude e limpeza' },{ value: 'madeira', label: 'Madeira Natural', desc: 'Freijó, Carvalho, Nogueira' },{ value: 'cinza', label: 'Tons de Cinza', desc: 'Fendi, Grafite, Cinza Claro' },{ value: 'areia', label: 'Areia / Off-white', desc: 'Aconchego neutro' },{ value: 'verde', label: 'Verde', desc: 'Menta, Musgo, Petróleo' },{ value: 'azul', label: 'Azul', desc: 'Marinho, Petróleo, Acinzentado' },{ value: 'preto', label: 'Preto Total', desc: 'Drama e sofisticação' },{ value: 'terracota', label: 'Terracota', desc: 'Tons terrosos' }]} />
@@ -177,13 +194,13 @@ export default function DeepDiveBriefing() {
           <RadioGroup label="11. TV na Cozinha/Copa?" selected={formData.tvCopa} onChange={(val) => setFormData({...formData, tvCopa: val})} layout="grid" options={[{ value: 'nao', label: 'Não queremos TV' },{ value: 'pequena', label: 'Pequena (Notícias)', desc: 'Até 32"' },{ value: 'media', label: 'Média (Novelas/Séries)', desc: '40" a 43"' },{ value: 'grande', label: 'Grande (Sala de TV)', desc: '50"+ (A copa é a sala de TV)' }]} />
         </Section>
 
-        <Section icon={Trash2} title="Funcionalidade Técnica" subtitle="Lixo, louça e organização" isOpen={sections.funcional} toggle={() => toggleSection('funcional')}>
+        <Section icon={Trash2} title="Técnica & Organização" subtitle="Lixo, louça e itens operacionais" isOpen={sections.funcional} toggle={() => toggleSection('funcional')}>
           <RadioGroup label="12. Lixeiras" selected={formData.lixeira} onChange={(val) => setFormData({...formData, lixeira: val})} options={[{ value: 'embutir', label: 'De embutir na bancada', desc: 'Tampa inox rente à pedra' },{ value: 'oculta', label: 'Oculta no armário', desc: 'Gavetão com baldes internos' },{ value: 'piso', label: 'Lixeira de Piso', desc: 'Modelo bonito de pedal externo' }]} />
 
           <RadioGroup label="13. Escorredor de Louças" selected={formData.escorredor} onChange={(val) => setFormData({...formData, escorredor: val})} options={[{ value: 'calha', label: 'Calha Úmida', desc: 'Canal equipado esculpido na pedra/inox' },{ value: 'oculto', label: 'Aéreo Oculto', desc: 'Dentro do armário acima da pia' },{ value: 'bancada', label: 'Tradicional de Bancada', desc: 'Móvel solto' }]} />
         </Section>
 
-        <Section icon={Zap} title="Tecnologia & Conforto" subtitle="Automação, Luz e Janelas" isOpen={sections.tech} toggle={() => toggleSection('tech')}>
+        <Section icon={Zap} title="Conforto & Automação" subtitle="Conforto, luz e automação" isOpen={sections.tech} toggle={() => toggleSection('tech')}>
            <RadioGroup label="14. Tratamento das Janelas" selected={formData.janelas} onChange={(val) => setFormData({...formData, janelas: val})} layout="grid" options={[{ value: 'sem', label: 'Sem cortinas', desc: 'Vista livre / Vidro limpo' },{ value: 'solar', label: 'Persiana Tela Solar', desc: 'Bloqueia calor, mantém visão externa' },{ value: 'horizontal', label: 'Persiana Horizontal', desc: 'Lâminas (Alumínio ou Madeira)' },{ value: 'tecido', label: 'Cortina de Tecido', desc: 'Estilo clássico (Cuidado c/ gordura)' }]} />
 
           <CheckboxGroup label="15. Cenários de Iluminação (Selecione todos desejados)" selected={formData.iluminacao} onChange={(val) => setFormData({...formData, iluminacao: val})} options={[{ value: 'geral', label: 'Luz Geral Intensa', desc: 'Painéis LED, foco em limpeza/trabalho' },{ value: 'indireta', label: 'Luz Indireta / Cênica', desc: 'Fitas LED em sancas/armários (Aconchego)' },{ value: 'trabalho', label: 'Luz de Trabalho', desc: 'Spots sobre a bancada de corte' },{ value: 'pendente', label: 'Pendentes Decorativos', desc: 'Sobre mesa/balcão' }]} />
