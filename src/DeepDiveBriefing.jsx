@@ -6,14 +6,14 @@ import {
 } from 'lucide-react';
 
 const styles = [
-  { id: 'dark-moody', title: 'Dark moody', desc: 'Armários pretos ou grafite, madeira escura, iluminação dramática.', img: '/img/Dark-Moody.jpeg' },
+  { id: 'dark_moody', title: 'Dark moody', desc: 'Armários pretos ou grafite, madeira escura, iluminação dramática.', img: '/img/Dark-Moody.jpeg' },
   { id: 'industrial', title: 'Industrial', desc: 'Cimento queimado, serralheria preta, estantes abertas, tubulação aparente.', img: '/img/Industrial.jpeg' },
   { id: 'contemporanea', title: 'Contemporânea', desc: 'Muita madeira, plantas, tons de pedra natural, aconchegante, luz quente.', img: '/img/Contemporanea.JPG' },
   { id: 'classica', title: 'Clássica', desc: 'Portas com molduras (shaker), puxadores concha, mármore, elegância atemporal.', img: '/img/Classica.jpeg' },
-  { id: 'pedra-exotica-e-cor', title: 'Pedra exótica e cor', desc: 'Veios marcantes e mistura de cor.', img: '/img/Pedra-exotica-e-cor.jpeg' },
-  { id: 'somente-cor', title: 'Somente cor', desc: 'Somente cor (paleta sólida).', img: '/img/Cor.jpeg' },
-  { id: 'pedra-exotica-minimalista', title: 'Pedra exótica minimalista', desc: 'Exótica com estética minimalista.', img: '/img/Pedra-exotica-minimalista.jpeg' },
-  { id: 'pedra-exotica-contemporanea', title: 'Pedra exótica contemporânea', desc: 'Exótica com toque contemporâneo.', img: '/img/Pedra-exotica-contemporanea.jpeg' }
+  { id: 'pedra_exotica_e_cor', title: 'Pedra exótica e cor', desc: 'Veios marcantes e cores especiais.', img: '/img/Pedra-exotica-e-cor.jpeg' },
+  { id: 'somente_cor', title: 'Somente cor', desc: 'Paleta de cor sem padrão de madeira ou pedra.', img: '/img/Cor.jpeg' },
+  { id: 'pedra_exotica_minimalista', title: 'Pedra exótica minimalista', desc: 'Pedra exótica com layout minimalista.', img: '/img/Pedra-exotica-minimalista.jpeg' },
+  { id: 'pedra_exotica_contemporanea', title: 'Pedra exótica contemporânea', desc: 'Pedra exótica em contexto contemporâneo.', img: '/img/Pedra-exotica-contemporanea.jpeg' }
 ];
 
 const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children }) => (
