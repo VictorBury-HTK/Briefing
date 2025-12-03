@@ -135,7 +135,8 @@ export default function DeepDiveBriefing() {
   return (
     <div className="app-wrapper">
       <div className="content-container">
-        <header className="header-content">
+        <header className="header-content" style={{position: 'relative', overflow: 'hidden'}}>
+          <div className="header-decorative-circle" />
           <div className="header-top">
             <div>
               <div className="flex items-center gap-2 mb-2 text-blue-400">
@@ -155,10 +156,11 @@ export default function DeepDiveBriefing() {
           <div className="visual-grid">
             {styles.map((style) => (
               <div key={style.id} className={`visual-card ${formData.estiloVisual === style.id ? 'selected' : ''}`} onClick={() => setFormData({...formData, estiloVisual: style.id})}>
-                <div className="visual-img-container">
-                  <img className="visual-img" src={style.img} alt={style.title} />
-                  {formData.estiloVisual === style.id && <div style={{position:'absolute', top:12, right:12, background:'#2563eb', color:'#fff', padding:6, borderRadius:999}}><Check size={18} color="#fff" /></div>}
-                </div>
+                  <div className="visual-img-container">
+                    <img className="visual-img" src={style.img} alt={style.title} />
+                    <div className="visual-overlay" />
+                    {formData.estiloVisual === style.id && <div style={{position:'absolute', top:12, right:12, background:'#2563eb', color:'#fff', padding:6, borderRadius:999}} className="badge-bounce"><Check size={18} color="#fff" /></div>}
+                  </div>
                 <div style={{padding:12}}>
                   <h3 style={{fontWeight:700, marginBottom:6}} className="text-slate-900">{style.title}</h3>
                   <p className="text-slate-400" style={{fontSize:13, lineHeight:1.2}}>{style.desc}</p>
@@ -230,10 +232,15 @@ export default function DeepDiveBriefing() {
         </Section>
 
         <div className="footer-actions">
-          <button onClick={downloadJSON} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
-            <Save size={18} /> Finalizar e Gerar PDF
-          </button>
-          <p style={{marginTop:12, fontSize:12}} className="text-slate-400">Preencha todos os campos antes de gerar o PDF.</p>
+          <div style={{display:'flex', justifyContent:'center', gap:12, flexWrap:'wrap'}}>
+            <button onClick={() => window.print()} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#0f172a' : '#9ca3af'}}>
+              <Printer size={18} /> Imprimir / Gerar PDF
+            </button>
+            <button onClick={downloadJSON} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
+              <Save size={18} /> Baixar JSON
+            </button>
+          </div>
+          <p style={{marginTop:12, fontSize:12}} className="text-slate-400">Preencha todos os campos antes de gerar o PDF ou exportar os dados.</p>
         </div>
 
       </div>
