@@ -25,8 +25,8 @@ const styles = [
   { id: 'pedra_exotica_contemporanea', title: 'Pedra exótica contemporânea', desc: 'Pedra exótica em contexto contemporâneo.', img: imgPedraExoticaContemporanea }
 ];
 
-const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children }) => (
-  <div className="section-separator">
+const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children, id, hasMissing }) => (
+  <div id={id} className={`section-separator ${hasMissing ? 'field-missing' : ''}`}>
     <div onClick={toggle} className="section-header" style={{background: isOpen ? '#f8fafc' : '#fff'}}>
       <div style={{display:'flex', alignItems:'center', gap:16}}>
         <div style={{padding:10, borderRadius:12, background: isOpen ? '#0f172a' : '#f1f5f9', color: isOpen ? '#fff' : '#94a3b8'}}>
@@ -95,12 +95,57 @@ const CheckboxGroup = ({ label, options, selected, onChange, maxSelection }) => 
 
 export default function DeepDiveBriefing() {
   const [sections, setSections] = useState({ estilo: true, rotina: true, materiais: true, copa: true, funcional: true, tech: true });
+  const [missingFields, setMissingFields] = useState([]);
   const [formData, setFormData] = useState({
     nome: '', cafeDaManha: '', quemCozinha: '', rotinaFuncionaria: '', integra: '', tomPedra: '', tomMarcenaria: [], tipoVidro: '', tomEletros: '', assentosCopa: '', tvCopa: '', tipoAssento: '', lixeira: '', escorredor: '', janelas: '', iluminacao: [], automacao: '', estiloVisual: ''
   });
 
   const toggleSection = (key) => setSections(prev => ({ ...prev, [key]: !prev[key] }));
   const handlePrint = () => window.print();
+
+  const validateForExport = () => {
+    const required = [
+      { key: 'nome', label: 'Nome do Cliente / Família', selectorId: 'field-nome' },
+      { key: 'estiloVisual', label: 'Identidade Visual (Arquétipo)', selectorId: 'section-estilo' },
+    ];
+    return required.filter(r => {
+      if (r.key === 'nome') return !(formData.nome && formData.nome.trim());
+      if (r.key === 'estiloVisual') return !formData.estiloVisual;
+      return false;
+    });
+  };
+
+  const attemptExport = (action) => {
+    const missing = validateForExport();
+    if (missing.length) {
+      const list = missing.map((m, i) => `${i+1}. ${m.label}`).join('\n');
+      // show alert with missing fields
+      window.alert(`Campos obrigatórios faltando:\n\n${list}`);
+
+      // set missing fields state for UI highlighting
+      setMissingFields(missing.map(m => m.key));
+
+      // scroll to the first missing field
+      const first = missing[0];
+      const el = document.getElementById(first.selectorId);
+      if (el && typeof el.scrollIntoView === 'function') {
+        // scroll smoothly to center the missing element
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // try to focus the first interactive element inside
+        const focusable = el.querySelector && el.querySelector('input, textarea, button, [tabindex]');
+        if (focusable && typeof focusable.focus === 'function') focusable.focus();
+      }
+
+      // clear highlights after a short delay (user can also correct manually)
+      setTimeout(() => setMissingFields([]), 6000);
+      return;
+    }
+    if (action === 'print') {
+      window.print();
+    } else if (action === 'json') {
+      downloadJSON();
+    }
+  };
 
   useEffect(() => {
     try {
@@ -218,10 +263,10 @@ export default function DeepDiveBriefing() {
 
         <div className="footer-actions">
           <div style={{display:'flex', justifyContent:'center', gap:12, flexWrap:'wrap'}}>
-            <button onClick={() => window.print()} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#0f172a' : '#9ca3af'}}>
+            <button onClick={() => attemptExport('print')} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#0f172a' : '#9ca3af'}}>
               <Printer size={18} /> Imprimir / Gerar PDF
             </button>
-            <button onClick={downloadJSON} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
+            <button onClick={() => attemptExport('json')} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
               <Save size={18} /> Baixar JSON
             </button>
           </div>
