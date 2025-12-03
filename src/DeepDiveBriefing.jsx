@@ -141,9 +141,6 @@ export default function DeepDiveBriefing() {
               <h1 style={{fontSize:22, fontWeight:300, letterSpacing:2, marginBottom:8}}>BRIEFING <strong style={{fontWeight:700, color:'#60a5fa'}}>DEEP DIVE</strong></h1>
               <p style={{color:'#94a3b8', fontSize:13}}>Detalhamento Técnico & Estético para Cozinha</p>
             </div>
-            <button onClick={handlePrint} style={{background:'#2563eb', borderRadius:10, padding:'8px 14px', color:'#fff', display:'flex', alignItems:'center', gap:8, border:'none'}}>
-              <Printer size={16} /> Imprimir / PDF
-            </button>
           </div>
           <div style={{marginTop:16}}>
             <input type="text" placeholder="Nome do Cliente / Família" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})} style={{width:'100%', maxWidth:480, background:'#0f172a', border:'1px solid #111827', color:'#fff', padding:12, borderRadius:8}} />
