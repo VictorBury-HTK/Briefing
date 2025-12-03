@@ -120,8 +120,11 @@ img { display:block; }
 .visual-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
 
 /* Hover scale and overlay */
-.visual-card .visual-img { transition: transform 0.7s ease; transform-origin: center; }
-.visual-card:hover .visual-img { transform: scale(1.06); }
+.visual-card .visual-img { transition: transform 0.45s ease; transform-origin: center; }
+/* Only apply hover scale on screens wider than 600px */
+@media (min-width: 600px) {
+  .visual-card:hover .visual-img { transform: scale(1.06); }
+}
 .visual-card .visual-overlay { position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.15) 40%, rgba(0,0,0,0)); opacity:0; transition: opacity .25s ease; }
 .visual-card:hover .visual-overlay, .visual-card.selected .visual-overlay { opacity:1; }
 
@@ -135,7 +138,10 @@ img { display:block; }
 /* Fix mobile visual card spacing: reduce min-height and avoid large empty space */
 @media (max-width: 480px) {
   .visual-card { min-height: auto; }
-  .visual-img-container { padding-top:56%; }
+  /* make images slightly less tall on very small screens */
+  .visual-img-container { padding-top:50%; }
+  /* ensure images don't scale on mobile */
+  .visual-card .visual-img { transform: none !important; }
 }
 
 /* Header title overflow fix - allow wrapping and avoid horizontal overflow */
