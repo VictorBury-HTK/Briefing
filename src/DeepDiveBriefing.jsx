@@ -214,22 +214,7 @@ export default function DeepDiveBriefing() {
           <RadioGroup label="16. Automação (Smart Home)" selected={formData.automacao} onChange={(val) => setFormData({...formData, automacao: val})} options={[{ value: 'nenhuma', label: 'Nenhuma (Interruptores comuns)' },{ value: 'basica', label: 'Básica (Alexa / Google Home)', desc: 'Controlar luz e TV por voz' },{ value: 'completa', label: 'Completa', desc: 'Sensores de gás, água, persianas elétricas' }]} />
         </Section>
 
-        <Section icon={ImageIcon} title="Referências Visuais" subtitle="O que faz seus olhos brilharem?" isOpen={sections.estilo} toggle={() => toggleSection('estilo')}>
-          <div className="visual-grid">
-            {styles.map((style) => (
-              <div key={style.id} className={`visual-card ${formData.estiloVisual === style.id ? 'selected' : ''}`} onClick={() => setFormData({...formData, estiloVisual: style.id})}>
-                <div className="visual-img-container">
-                  <img className="visual-img" src={style.img} alt={style.title} />
-                  {formData.estiloVisual === style.id && <div style={{position:'absolute', top:12, right:12, background:'#2563eb', color:'#fff', padding:6, borderRadius:999}}><Check size={18} color="#fff" /></div>}
-                </div>
-                <div style={{padding:12}}>
-                  <h3 style={{fontWeight:700, marginBottom:6}} className="text-slate-900">{style.title}</h3>
-                  <p className="text-slate-400" style={{fontSize:13, lineHeight:1.2}}>{style.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
+        
 
         <div className="footer-actions">
           <div style={{display:'flex', justifyContent:'center', gap:12, flexWrap:'wrap'}}>
