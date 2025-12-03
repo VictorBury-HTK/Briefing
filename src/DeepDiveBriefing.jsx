@@ -192,12 +192,11 @@ export default function DeepDiveBriefing() {
         </Section>
 
         <Section icon={ImageIcon} title="Referências Visuais" subtitle="O que faz seus olhos brilharem?" isOpen={sections.estilo} toggle={() => toggleSection('estilo')}>
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:16, padding:8}}>
+          <div className="visual-grid">
             {styles.map((style) => (
-              <div key={style.id} onClick={() => setFormData({...formData, estiloVisual: style.id})} style={{cursor:'pointer', borderRadius:12, overflow:'hidden', border: formData.estiloVisual === style.id ? '2px solid #2563eb' : '1px solid #f1f5f9', boxShadow: formData.estiloVisual === style.id ? '0 10px 30px rgba(37,99,235,0.12)' : '0 6px 16px rgba(2,6,23,0.04)'}}>
-                <div style={{position:'relative', paddingTop:'75%'}}>
-                  <img src={style.img} alt={style.title} style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}} />
-                  <div style={{position:'absolute', inset:0, background: formData.estiloVisual === style.id ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0)'}} />
+              <div key={style.id} className={`visual-card ${formData.estiloVisual === style.id ? 'selected' : ''}`} onClick={() => setFormData({...formData, estiloVisual: style.id})}>
+                <div className="visual-img-container">
+                  <img className="visual-img" src={style.img} alt={style.title} />
                   {formData.estiloVisual === style.id && <div style={{position:'absolute', top:12, right:12, background:'#2563eb', color:'#fff', padding:6, borderRadius:999}}><Check size={18} color="#fff" /></div>}
                 </div>
                 <div style={{padding:12}}>
