@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { 
   Printer, Save, Check, Circle, ChefHat, 
   Palette, Armchair, Trash2, Zap, Image as ImageIcon, 
@@ -133,6 +133,7 @@ export default function DeepDiveBriefing() {
   const [formData, setFormData] = useState({
     nome: '', cafeDaManha: '', quemCozinha: '', rotinaFuncionaria: '', integra: '', tomPedra: '', tomMarcenaria: [], tipoVidro: '', tomEletros: '', assentosCopa: '', tvCopa: '', tipoAssento: '', lixeira: '', escorredor: '', janelas: '', iluminacao: [], automacao: '', estiloVisual: ''
   });
+  const modalOpenTimerRef = useRef(null);
 
   const toggleSection = (key) => setSections(prev => ({ ...prev, [key]: !prev[key] }));
   const handlePrint = () => window.print();
@@ -180,7 +181,14 @@ export default function DeepDiveBriefing() {
         // set missing fields state for UI highlighting and open modal
         setMissingFields(missing.map(m => m.key));
         setModalItems(missing);
-        setTimeout(() => setModalOpen(true), 150);
+        if (modalOpenTimerRef.current) {
+          clearTimeout(modalOpenTimerRef.current);
+          modalOpenTimerRef.current = null;
+        }
+        modalOpenTimerRef.current = setTimeout(() => {
+          setModalOpen(true);
+          modalOpenTimerRef.current = null;
+        }, 150);
         return;
       }
     if (action === 'print') {
@@ -243,7 +251,20 @@ export default function DeepDiveBriefing() {
     setModalOpen(false);
     setMissingFields([]);
     setModalItems([]);
+    if (modalOpenTimerRef.current) {
+      clearTimeout(modalOpenTimerRef.current);
+      modalOpenTimerRef.current = null;
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      if (modalOpenTimerRef.current) {
+        clearTimeout(modalOpenTimerRef.current);
+        modalOpenTimerRef.current = null;
+      }
+    };
+  }, []);
 
   const downloadJSON = () => {
     const blob = new Blob([JSON.stringify(formData, null, 2)], { type: 'application/json' });
