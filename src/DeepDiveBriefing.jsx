@@ -143,7 +143,7 @@ export default function DeepDiveBriefing() {
                 <Layout size={20} />
                 <span className="text-xs font-bold tracking-widest uppercase">sambaqui arquitetura</span>
               </div>
-              <h1 className="header-title">BRIEFING <strong>DEEP DIVE</strong></h1>
+              <h1 className="header-title">BRIEFING <strong>COZINHA</strong></h1>
               <p className="header-sub">Detalhamento Técnico & Estético para Cozinha</p>
             </div>
           </div>

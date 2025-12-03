@@ -117,7 +117,7 @@ img { display:block; }
   box-shadow: 0 0 0 4px #eff6ff;
 }
 .visual-img-container { position: relative; padding-top: 75%; }
-.visual-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.visual-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
 
 /* Hover scale and overlay */
 .visual-card .visual-img { transition: transform 0.7s ease; transform-origin: center; }
