@@ -54,6 +54,29 @@ const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children, id, ha
   );
 };
 
+const MissingModal = ({ open, missing, onClose, onJump }) => {
+  if (!open) return null;
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true">
+      <div className="modal-card">
+        <h3 style={{marginTop:0}}>Campos obrigatórios faltando</h3>
+        <p style={{color:'#475569', fontSize:13}}>Preencha os campos abaixo antes de exportar.</p>
+        <ul style={{marginTop:12}}>
+          {missing.map((m, idx) => (
+            <li key={m.key} style={{marginBottom:10, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+              <span>{idx+1}. {m.label}</span>
+              <button className="link-btn" onClick={() => onJump(m.selectorId)}>Ir para</button>
+            </li>
+          ))}
+        </ul>
+        <div style={{display:'flex', justifyContent:'flex-end', gap:8, marginTop:8}}>
+          <button className="primary-btn" onClick={onClose} style={{background:'#6b7280'}}>Fechar</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const RadioGroup = ({ label, options, selected, onChange, layout = 'col' }) => (
   <div style={{marginBottom:24}}>
     <h3 style={{fontSize:13, fontWeight:700, marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}} className="text-slate-900">{label}</h3>
@@ -117,40 +140,45 @@ export default function DeepDiveBriefing() {
   const validateForExport = () => {
     const required = [
       { key: 'nome', label: 'Nome do Cliente / Família', selectorId: 'field-nome' },
+      { key: 'cafeDaManha', label: 'Rotina de Café da Manhã', selectorId: 'section-rotina' },
+      { key: 'quemCozinha', label: 'Quem cozinha?', selectorId: 'section-rotina' },
+      { key: 'rotinaFuncionaria', label: 'Rotina da Funcionária', selectorId: 'section-rotina' },
+      { key: 'integra', label: 'Nível de Integração com Sala', selectorId: 'section-rotina' },
+      { key: 'tomPedra', label: 'Tonalidade das Bancadas (Pedras)', selectorId: 'section-materiais' },
+      { key: 'tomMarcenaria', label: 'Cores da Marcenaria', selectorId: 'section-materiais' },
+      { key: 'tipoVidro', label: 'Vidros e Transparências', selectorId: 'section-materiais' },
+      { key: 'tomEletros', label: 'Tonalidade dos Eletros', selectorId: 'section-materiais' },
+      { key: 'assentosCopa', label: 'Quantos Assentos', selectorId: 'section-copa' },
+      { key: 'tipoAssento', label: 'Tipo de Assento', selectorId: 'section-copa' },
+      { key: 'tvCopa', label: 'TV na Copa', selectorId: 'section-copa' },
+      { key: 'lixeira', label: 'Lixeiras', selectorId: 'section-funcional' },
+      { key: 'escorredor', label: 'Escorredor de Louças', selectorId: 'section-funcional' },
+      { key: 'janelas', label: 'Tratamento das Janelas', selectorId: 'section-tech' },
+      { key: 'iluminacao', label: 'Cenários de Iluminação', selectorId: 'section-tech' },
+      { key: 'automacao', label: 'Automação', selectorId: 'section-tech' },
       { key: 'estiloVisual', label: 'Identidade Visual (Arquétipo)', selectorId: 'section-estilo' },
     ];
     return required.filter(r => {
-      if (r.key === 'nome') return !(formData.nome && formData.nome.trim());
-      if (r.key === 'estiloVisual') return !formData.estiloVisual;
-      return false;
+      const val = formData[r.key];
+      if (Array.isArray(val)) return val.length === 0;
+      if (typeof val === 'string') return !val.trim();
+      return val === undefined || val === null || val === '';
     });
   };
 
   const attemptExport = (action) => {
     const missing = validateForExport();
     if (missing.length) {
-      const list = missing.map((m, i) => `${i+1}. ${m.label}`).join('\n');
-      // show alert with missing fields
-      window.alert(`Campos obrigatórios faltando:\n\n${list}`);
-
-      // set missing fields state for UI highlighting
-      setMissingFields(missing.map(m => m.key));
-
-      // scroll to the first missing field
-      const first = missing[0];
-      const el = document.getElementById(first.selectorId);
-      if (el && typeof el.scrollIntoView === 'function') {
-        // scroll smoothly to center the missing element
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // try to focus the first interactive element inside
-        const focusable = el.querySelector && el.querySelector('input, textarea, button, [tabindex]');
-        if (focusable && typeof focusable.focus === 'function') focusable.focus();
+        // set missing fields state for UI highlighting and open modal
+        setMissingFields(missing.map(m => m.key));
+        setModalOpen(true);
+        setModalItems(missing);
+        // scroll to first missing section header so modal isn't behind it
+        const first = missing[0];
+        const el = document.getElementById(first.selectorId);
+        if (el && typeof el.scrollIntoView === 'function') el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
       }
-
-      // clear highlights after a short delay (user can also correct manually)
-      setTimeout(() => setMissingFields([]), 6000);
-      return;
-    }
     if (action === 'print') {
       window.print();
     } else if (action === 'json') {
@@ -171,6 +199,18 @@ export default function DeepDiveBriefing() {
   useEffect(() => {
     try { localStorage.setItem('deepDiveBriefing', JSON.stringify(formData)); } catch (e) {}
   }, [formData]);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalItems, setModalItems] = useState([]);
+
+  const handleJumpTo = (selectorId) => {
+    const el = document.getElementById(selectorId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const focusable = el.querySelector && el.querySelector('input, textarea, button, [tabindex]');
+      if (focusable && typeof focusable.focus === 'function') focusable.focus();
+    }
+  };
 
   const downloadJSON = () => {
     const blob = new Blob([JSON.stringify(formData, null, 2)], { type: 'application/json' });
