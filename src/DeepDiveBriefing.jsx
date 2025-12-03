@@ -5,15 +5,24 @@ import {
   ChevronDown, ChevronUp, Coffee, Sun 
 } from 'lucide-react';
 
+import imgDark from '../img/Dark-Moody.jpeg';
+import imgIndustrial from '../img/Industrial.jpeg';
+import imgContemporanea from '../img/Contemporanea.JPG';
+import imgClassica from '../img/Classica.jpeg';
+import imgPedraExoticaCor from '../img/Pedra-exotica-e-cor.jpeg';
+import imgSomenteCor from '../img/Cor.jpeg';
+import imgPedraExoticaMinimalista from '../img/Pedra-exotica-minimalista.jpeg';
+import imgPedraExoticaContemporanea from '../img/Pedra-exotica-contemporanea.jpeg';
+
 const styles = [
-  { id: 'dark_moody', title: 'Dark moody', desc: 'Armários pretos ou grafite, madeira escura, iluminação dramática.', img: '/img/Dark-Moody.jpeg' },
-  { id: 'industrial', title: 'Industrial', desc: 'Cimento queimado, serralheria preta, estantes abertas, tubulação aparente.', img: '/img/Industrial.jpeg' },
-  { id: 'contemporanea', title: 'Contemporânea', desc: 'Muita madeira, plantas, tons de pedra natural, aconchegante, luz quente.', img: '/img/Contemporanea.JPG' },
-  { id: 'classica', title: 'Clássica', desc: 'Portas com molduras (shaker), puxadores concha, mármore, elegância atemporal.', img: '/img/Classica.jpeg' },
-  { id: 'pedra_exotica_e_cor', title: 'Pedra exótica e cor', desc: 'Veios marcantes e cores especiais.', img: '/img/Pedra-exotica-e-cor.jpeg' },
-  { id: 'somente_cor', title: 'Somente cor', desc: 'Paleta de cor sem padrão de madeira ou pedra.', img: '/img/Cor.jpeg' },
-  { id: 'pedra_exotica_minimalista', title: 'Pedra exótica minimalista', desc: 'Pedra exótica com layout minimalista.', img: '/img/Pedra-exotica-minimalista.jpeg' },
-  { id: 'pedra_exotica_contemporanea', title: 'Pedra exótica contemporânea', desc: 'Pedra exótica em contexto contemporâneo.', img: '/img/Pedra-exotica-contemporanea.jpeg' }
+  { id: 'dark_moody', title: 'Dark moody', desc: 'Armários pretos ou grafite, madeira escura, iluminação dramática.', img: imgDark },
+  { id: 'industrial', title: 'Industrial', desc: 'Cimento queimado, serralheria preta, estantes abertas, tubulação aparente.', img: imgIndustrial },
+  { id: 'contemporanea', title: 'Contemporânea', desc: 'Muita madeira, plantas, tons de pedra natural, aconchegante, luz quente.', img: imgContemporanea },
+  { id: 'classica', title: 'Clássica', desc: 'Portas com molduras (shaker), puxadores concha, mármore, elegância atemporal.', img: imgClassica },
+  { id: 'pedra_exotica_e_cor', title: 'Pedra exótica e cor', desc: 'Veios marcantes e cores especiais.', img: imgPedraExoticaCor },
+  { id: 'somente_cor', title: 'Somente cor', desc: 'Paleta de cor sem padrão de madeira ou pedra.', img: imgSomenteCor },
+  { id: 'pedra_exotica_minimalista', title: 'Pedra exótica minimalista', desc: 'Pedra exótica com layout minimalista.', img: imgPedraExoticaMinimalista },
+  { id: 'pedra_exotica_contemporanea', title: 'Pedra exótica contemporânea', desc: 'Pedra exótica em contexto contemporâneo.', img: imgPedraExoticaContemporanea }
 ];
 
 const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children }) => (
