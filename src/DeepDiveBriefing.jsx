@@ -26,33 +26,33 @@ const styles = [
 ];
 
 const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children }) => (
-  <div style={{borderBottom: '1px solid #e2e8f0', breakInside: 'avoid'}}>
-    <div onClick={toggle} style={{display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%', padding:'1.5rem', cursor:'pointer', background: isOpen ? '#f8fafc' : '#fff'}}>
+  <div className="section-separator">
+    <div onClick={toggle} className="section-header" style={{background: isOpen ? '#f8fafc' : '#fff'}}>
       <div style={{display:'flex', alignItems:'center', gap:16}}>
         <div style={{padding:10, borderRadius:12, background: isOpen ? '#0f172a' : '#f1f5f9', color: isOpen ? '#fff' : '#94a3b8'}}>
           <Icon size={22} />
         </div>
         <div>
-          <h2 style={{fontSize:18, fontWeight:700, color:'#0f172a'}}>{title}</h2>
-          {subtitle && <p style={{fontSize:13, color:'#94a3b8'}}>{subtitle}</p>}
+          <h2 className="text-slate-900" style={{fontSize:18, fontWeight:700}}>{title}</h2>
+          {subtitle && <p className="text-slate-400" style={{fontSize:13}}>{subtitle}</p>}
         </div>
       </div>
       {isOpen ? <ChevronUp size={18} color="#94a3b8" /> : <ChevronDown size={18} color="#94a3b8" />}
     </div>
-    {isOpen && <div style={{padding:'1.5rem', background:'#fff', animation:'fadeIn .2s'}}>{children}</div>}
+    {isOpen && <div className="section-body">{children}</div>}
   </div>
 );
 
 const RadioGroup = ({ label, options, selected, onChange, layout = 'col' }) => (
   <div style={{marginBottom:24}}>
-    <h3 style={{fontSize:13, fontWeight:700, color:'#0f172a', marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}}>{label}</h3>
-    <div style={{display:'grid', gap:12, gridTemplateColumns: layout === 'grid' ? '1fr 1fr' : '1fr'}}>
+    <h3 style={{fontSize:13, fontWeight:700, marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}} className="text-slate-900">{label}</h3>
+    <div className={`options-grid ${layout === 'grid' ? 'grid-layout' : ''}`}>
       {options.map((opt) => (
-        <label key={opt.value} style={{display:'flex', alignItems:'center', gap:12, padding:12, borderRadius:12, border: selected === opt.value ? '2px solid #2563eb' : '1px solid #e6eef6', background: selected === opt.value ? '#eff6ff' : '#fff', cursor:'pointer'}}>
+        <label key={opt.value} className={`radio-item ${selected === opt.value ? 'selected' : ''}`}>
           <input type="radio" name={label} value={opt.value} checked={selected === opt.value} onChange={() => onChange(opt.value)} />
           <div style={{flex:1}}>
-            <span style={{display:'block', fontSize:14, fontWeight:600, color:'#0f172a'}}>{opt.label}</span>
-            {opt.desc && <span style={{display:'block', fontSize:12, color:'#94a3b8', marginTop:4}}>{opt.desc}</span>}
+            <span style={{display:'block', fontSize:14, fontWeight:600}} className="text-slate-900">{opt.label}</span>
+            {opt.desc && <span className="text-slate-400" style={{display:'block', fontSize:12, marginTop:4}}>{opt.desc}</span>}
           </div>
           {opt.color && <div style={{width:24, height:24, borderRadius:999, border:'1px solid #e6eef6', boxShadow:'0 1px 3px rgba(2,6,23,0.05)', background:opt.color}} />}
         </label>
@@ -63,12 +63,12 @@ const RadioGroup = ({ label, options, selected, onChange, layout = 'col' }) => (
 
 const CheckboxGroup = ({ label, options, selected, onChange, maxSelection }) => (
   <div style={{marginBottom:24}}>
-    <h3 style={{fontSize:13, fontWeight:700, color:'#0f172a', marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}}>{label}</h3>
-    <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12}}>
+    <h3 style={{fontSize:13, fontWeight:700, marginBottom:12, textTransform:'uppercase', letterSpacing:1.2}} className="text-slate-900">{label}</h3>
+    <div className="options-grid grid-layout">
       {options.map((opt) => {
         const isSelected = selected.includes(opt.value);
         return (
-          <div key={opt.value} onClick={() => {
+          <div key={opt.value} className={`checkbox-item ${isSelected ? 'selected' : ''}`} onClick={() => {
             if (isSelected) {
               onChange(selected.filter(i => i !== opt.value));
             } else {
@@ -78,13 +78,13 @@ const CheckboxGroup = ({ label, options, selected, onChange, maxSelection }) => 
               }
               onChange([...selected, opt.value]);
             }
-          }} style={{display:'flex', alignItems:'center', gap:12, padding:12, borderRadius:12, border: isSelected ? '2px solid #059669' : '1px solid #e6eef6', background: isSelected ? '#ecfdf5' : '#fff', cursor:'pointer'}}>
+          }}>
             <div style={{width:20, height:20, borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center', border: isSelected ? '1px solid #059669' : '1px solid #cbd5e1', background: isSelected ? '#059669' : '#fff', color:'#fff'}}>
               {isSelected && <Check size={14} color="#fff" />}
             </div>
             <div>
-              <span style={{display:'block', fontSize:14, fontWeight:600, color:'#0f172a'}}>{opt.label}</span>
-              {opt.desc && <span style={{display:'block', fontSize:12, color:'#94a3b8'}}>{opt.desc}</span>}
+              <span style={{display:'block', fontSize:14, fontWeight:600}} className="text-slate-900">{opt.label}</span>
+              {opt.desc && <span style={{display:'block', fontSize:12}} className="text-slate-400">{opt.desc}</span>}
             </div>
           </div>
         );
@@ -133,17 +133,17 @@ export default function DeepDiveBriefing() {
   };
 
   return (
-    <div style={{minHeight:'100vh', background:'#0B2B5A', padding:'2rem', fontFamily: 'Inter, system-ui, sans-serif', color:'#0f172a'}}>
-      <div style={{maxWidth:1024, margin:'0 auto', background:'#fff', borderRadius:20, overflow:'hidden', boxShadow:'0 20px 50px rgba(2,6,23,0.08)'}}>
-        <header style={{background:'#0f172a', color:'#fff', padding:'2rem'}}>
-          <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
+    <div className="app-wrapper">
+      <div className="content-container">
+        <header className="header-content">
+          <div className="header-top">
             <div>
-              <h1 style={{fontSize:22, fontWeight:300, letterSpacing:2, marginBottom:8}}>BRIEFING <strong style={{fontWeight:700, color:'#60a5fa'}}>DEEP DIVE</strong></h1>
-              <p style={{color:'#94a3b8', fontSize:13}}>Detalhamento Técnico & Estético para Cozinha</p>
+              <h1 className="header-title">BRIEFING <strong>DEEP DIVE</strong></h1>
+              <p className="header-sub">Detalhamento Técnico & Estético para Cozinha</p>
             </div>
           </div>
           <div style={{marginTop:16}}>
-            <input type="text" placeholder="Nome do Cliente / Família" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})} style={{width:'100%', maxWidth:480, background:'#0f172a', border:'1px solid #111827', color:'#fff', padding:12, borderRadius:8}} />
+            <input className="client-input" type="text" placeholder="Nome do Cliente / Família" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})} />
           </div>
         </header>
 
@@ -200,19 +200,19 @@ export default function DeepDiveBriefing() {
                   {formData.estiloVisual === style.id && <div style={{position:'absolute', top:12, right:12, background:'#2563eb', color:'#fff', padding:6, borderRadius:999}}><Check size={18} color="#fff" /></div>}
                 </div>
                 <div style={{padding:12}}>
-                  <h3 style={{fontWeight:700, color:'#0f172a', marginBottom:6}}>{style.title}</h3>
-                  <p style={{color:'#94a3b8', fontSize:13, lineHeight:1.2}}>{style.desc}</p>
+                  <h3 style={{fontWeight:700, marginBottom:6}} className="text-slate-900">{style.title}</h3>
+                  <p className="text-slate-400" style={{fontSize:13, lineHeight:1.2}}>{style.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </Section>
 
-        <div style={{background:'#f8fafc', padding:'2rem', borderTop:'1px solid #e2e8f0', textAlign:'center'}}>
-          <button onClick={downloadJSON} disabled={!isFormValid()} style={{background:isFormValid() ? '#059669' : '#9ca3af', borderRadius:14, padding:'12px 24px', color:'#fff', fontWeight:700, border:'none', display:'inline-flex', alignItems:'center', gap:10}}>
+        <div className="footer-actions">
+          <button onClick={downloadJSON} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
             <Save size={18} /> Finalizar e Gerar PDF
           </button>
-          <p style={{marginTop:12, fontSize:12, color:'#94a3b8'}}>Preencha todos os campos antes de gerar o PDF.</p>
+          <p style={{marginTop:12, fontSize:12}} className="text-slate-400">Preencha todos os campos antes de gerar o PDF.</p>
         </div>
 
       </div>
