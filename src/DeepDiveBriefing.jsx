@@ -25,23 +25,34 @@ const styles = [
   { id: 'pedra_exotica_contemporanea', title: 'Pedra exótica contemporânea', desc: 'Pedra exótica em contexto contemporâneo.', img: imgPedraExoticaContemporanea }
 ];
 
-const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children, id, hasMissing }) => (
-  <div id={id} className={`section-separator ${hasMissing ? 'field-missing' : ''}`}>
-    <div onClick={toggle} className="section-header" style={{background: isOpen ? '#f8fafc' : '#fff'}}>
-      <div style={{display:'flex', alignItems:'center', gap:16}}>
-        <div style={{padding:10, borderRadius:12, background: isOpen ? '#0f172a' : '#f1f5f9', color: isOpen ? '#fff' : '#94a3b8'}}>
-          <Icon size={22} />
+const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children, id, hasMissing }) => {
+  let subtitleDisplay = subtitle || '';
+  if (subtitleDisplay) {
+    const parts = subtitleDisplay.trim().split(/\s+/);
+    if (parts.length >= 3) {
+      const lastThree = parts.splice(-3).join('\u00A0');
+      parts.push(lastThree);
+      subtitleDisplay = parts.join(' ');
+    }
+  }
+  return (
+    <div id={id} className={`section-separator ${hasMissing ? 'field-missing' : ''}`}>
+      <div onClick={toggle} className="section-header" style={{background: isOpen ? '#f8fafc' : '#fff'}}>
+        <div style={{display:'flex', alignItems:'center', gap:16}}>
+          <div style={{padding:10, borderRadius:12, background: isOpen ? '#0f172a' : '#f1f5f9', color: isOpen ? '#fff' : '#94a3b8'}}>
+            <Icon size={22} />
+          </div>
+          <div>
+            <h2 className="text-slate-900" style={{fontSize:18, fontWeight:700}}>{title}</h2>
+            {subtitle && <p className="text-slate-400" style={{fontSize:13}}>{subtitleDisplay}</p>}
+          </div>
         </div>
-        <div>
-          <h2 className="text-slate-900" style={{fontSize:18, fontWeight:700}}>{title}</h2>
-          {subtitle && <p className="text-slate-400" style={{fontSize:13}}>{subtitle}</p>}
-        </div>
+        {isOpen ? <ChevronUp size={18} color="#94a3b8" /> : <ChevronDown size={18} color="#94a3b8" />}
       </div>
-      {isOpen ? <ChevronUp size={18} color="#94a3b8" /> : <ChevronDown size={18} color="#94a3b8" />}
+      {isOpen && <div className="section-body">{children}</div>}
     </div>
-    {isOpen && <div className="section-body">{children}</div>}
-  </div>
-);
+  );
+};
 
 const RadioGroup = ({ label, options, selected, onChange, layout = 'col' }) => (
   <div style={{marginBottom:24}}>
@@ -193,11 +204,11 @@ export default function DeepDiveBriefing() {
             </div>
           </div>
           <div style={{marginTop:16}}>
-            <input className="client-input" type="text" placeholder="Nome do Cliente / Família" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})} />
+            <input id="field-nome" className="client-input" type="text" placeholder="Nome do Cliente / Família" value={formData.nome} onChange={(e) => setFormData({...formData, nome: e.target.value})} />
           </div>
         </header>
 
-        <Section icon={ImageIcon} title="Identidade Visual (Arquétipos)" subtitle="Qual destas cozinhas faz seu coração bater mais forte?" isOpen={sections.estilo} toggle={() => toggleSection('estilo')}>
+        <Section id="section-estilo" hasMissing={missingFields.includes('estiloVisual')} icon={ImageIcon} title="Identidade Visual (Arquétipos)" subtitle="Qual destas cozinhas faz seu coração bater mais forte?" isOpen={sections.estilo} toggle={() => toggleSection('estilo')}>
           <div className="visual-grid">
             {styles.map((style) => (
               <div key={style.id} className={`visual-card ${formData.estiloVisual === style.id ? 'selected' : ''}`} onClick={() => setFormData({...formData, estiloVisual: style.id})}>
@@ -263,10 +274,10 @@ export default function DeepDiveBriefing() {
 
         <div className="footer-actions">
           <div style={{display:'flex', justifyContent:'center', gap:12, flexWrap:'wrap'}}>
-            <button onClick={() => attemptExport('print')} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#0f172a' : '#9ca3af'}}>
+            <button onClick={() => attemptExport('print')} className="primary-btn" style={{background:isFormValid() ? '#0f172a' : '#9ca3af'}}>
               <Printer size={18} /> Imprimir / Gerar PDF
             </button>
-            <button onClick={() => attemptExport('json')} disabled={!isFormValid()} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
+            <button onClick={() => attemptExport('json')} className="primary-btn" style={{background:isFormValid() ? '#059669' : '#9ca3af'}}>
               <Save size={18} /> Baixar JSON
             </button>
           </div>
