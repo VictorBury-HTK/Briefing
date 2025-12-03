@@ -212,6 +212,12 @@ export default function DeepDiveBriefing() {
     }
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+    setMissingFields([]);
+    setModalItems([]);
+  };
+
   const downloadJSON = () => {
     const blob = new Blob([JSON.stringify(formData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -266,7 +272,7 @@ export default function DeepDiveBriefing() {
           </div>
         </Section>
 
-        <Section icon={ChefHat} title="Rotina & Fluxo" subtitle="Como a casa funciona no dia a dia?" isOpen={sections.rotina} toggle={() => toggleSection('rotina')}>
+        <Section id="section-rotina" hasMissing={missingFields.some(k => ['cafeDaManha','quemCozinha','rotinaFuncionaria','integra'].includes(k))} icon={ChefHat} title="Rotina & Fluxo" subtitle="Como a casa funciona no dia a dia?" isOpen={sections.rotina} toggle={() => toggleSection('rotina')}>
           <RadioGroup label="1. Rotina de Café da Manhã" selected={formData.cafeDaManha} onChange={(val) => setFormData({...formData, cafeDaManha: val})} options={[{ value: 'mesa', label: 'Todos sentados à mesa juntos' },{ value: 'fluxo', label: 'Horários diferentes (fluxo rápido)' },{ value: 'balcao', label: 'Rápido/Em pé no balcão' },{ value: 'nao_toma', label: 'Não tomamos café em casa' }]} />
           <RadioGroup label="2. Quem cozinha?" selected={formData.quemCozinha} onChange={(val) => setFormData({...formData, quemCozinha: val})} options={[{ value: 'gourmet', label: 'Eu/Cônjuge (Pratos elaborados/Hobby)' },{ value: 'basico', label: 'Eu/Cônjuge (Apenas o básico/rápido)' },{ value: 'funcionaria', label: 'Funcionária/Cozinheira (Diariamente)' },{ value: 'misto', label: 'Misto (Funcionária + Família no fds)' }]} />
 
@@ -278,7 +284,7 @@ export default function DeepDiveBriefing() {
           <RadioGroup label="Nível de Integração com Sala" selected={formData.integra} onChange={(val) => setFormData({...formData, integra: val})} options={[{ value: 'total', label: '100% Aberta (Conceito Americano)', desc: 'Cheiros/Barulhos não incomodam' },{ value: 'flexivel', label: 'Integrável (Portas de correr)', desc: 'Posso fechar quando necessário' },{ value: 'fechada', label: 'Fechada (Privacidade total)', desc: 'Isolamento de odores é prioridade' }]} />
         </Section>
 
-        <Section icon={Palette} title="Materiais & Acabamentos" subtitle="Tonalidades, pedras, vidros e metais" isOpen={sections.materiais} toggle={() => toggleSection('materiais')}>
+        <Section id="section-materiais" hasMissing={missingFields.some(k => ['tomPedra','tomMarcenaria','tipoVidro','tomEletros'].includes(k))} icon={Palette} title="Materiais & Acabamentos" subtitle="Tonalidades, pedras, vidros e metais" isOpen={sections.materiais} toggle={() => toggleSection('materiais')}>
           <RadioGroup label="5. Tonalidade das Bancadas (Pedras)" selected={formData.tomPedra} onChange={(val) => setFormData({...formData, tomPedra: val})} layout="grid" options={[{ value: 'branca', label: 'Branca / Claríssima', desc: 'Quartzo Branco, Mármore Paraná', color: '#f8f9fa' },{ value: 'cinza', label: 'Cinza / Concreto', desc: 'Gris, Cimento Queimado', color: '#adb5bd' },{ value: 'preta', label: 'Escura / Preta', desc: 'São Gabriel, Via Láctea, Dekton', color: '#212529' },{ value: 'exotica', label: 'Veios Marcantes / Exótica', desc: 'Calacatta, Mármores desenhados', color: '#e9ecef' }]} />
 
           <CheckboxGroup label="6. Cores da Marcenaria (Selecione até 2 favoritos)" selected={formData.tomMarcenaria} onChange={(val) => setFormData({...formData, tomMarcenaria: val})} maxSelection={2} options={[{ value: 'branco', label: 'Branco Clássico', desc: 'Amplitude e limpeza' },{ value: 'madeira', label: 'Madeira Natural', desc: 'Freijó, Carvalho, Nogueira' },{ value: 'cinza', label: 'Tons de Cinza', desc: 'Fendi, Grafite, Cinza Claro' },{ value: 'areia', label: 'Areia / Off-white', desc: 'Aconchego neutro' },{ value: 'verde', label: 'Verde', desc: 'Menta, Musgo, Petróleo' },{ value: 'azul', label: 'Azul', desc: 'Marinho, Petróleo, Acinzentado' },{ value: 'preto', label: 'Preto Total', desc: 'Drama e sofisticação' },{ value: 'terracota', label: 'Terracota', desc: 'Tons terrosos' }]} />
@@ -288,7 +294,7 @@ export default function DeepDiveBriefing() {
           <RadioGroup label="8. Tonalidade dos Eletros" selected={formData.tomEletros} onChange={(val) => setFormData({...formData, tomEletros: val})} layout="grid" options={[{ value: 'inox', label: 'Aço Inox', desc: 'Tradicional prateado' },{ value: 'black', label: 'Black Inox / Preto', desc: 'Preto fosco ou brilhante' },{ value: 'branco', label: 'Branco', desc: 'Linha White ou Retro' },{ value: 'oculto', label: 'Ocultos (Painéis)', desc: 'Marcenaria esconde tudo' }]} />
         </Section>
 
-        <Section icon={Coffee} title="A Copa" subtitle="Refeições rápidas e convivência" isOpen={sections.copa} toggle={() => toggleSection('copa')}>
+        <Section id="section-copa" hasMissing={missingFields.some(k => ['assentosCopa','tipoAssento','tvCopa'].includes(k))} icon={Coffee} title="A Copa" subtitle="Refeições rápidas e convivência" isOpen={sections.copa} toggle={() => toggleSection('copa')}>
           <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:24}}>
             <RadioGroup label="9. Quantos Assentos?" selected={formData.assentosCopa} onChange={(val) => setFormData({...formData, assentosCopa: val})} options={[{ value: '2', label: '2 Lugares' },{ value: '3', label: '3 Lugares' },{ value: '4', label: '4 Lugares' },{ value: '5+', label: '5 ou mais' }]} />
              <RadioGroup label="10. Tipo de Assento" selected={formData.tipoAssento} onChange={(val) => setFormData({...formData, tipoAssento: val})} options={[{ value: 'cadeira', label: 'Cadeiras (Padrão)', desc: 'Conforto máximo' },{ value: 'banqueta', label: 'Banquetas Altas', desc: 'Estilo bar' },{ value: 'canto_alemao', label: 'Canto Alemão', desc: 'Banco fixo na parede + cadeiras' }]} />
@@ -296,13 +302,13 @@ export default function DeepDiveBriefing() {
           <RadioGroup label="11. TV na Cozinha/Copa?" selected={formData.tvCopa} onChange={(val) => setFormData({...formData, tvCopa: val})} layout="grid" options={[{ value: 'nao', label: 'Não queremos TV' },{ value: 'pequena', label: 'Pequena (Notícias)', desc: 'Até 32"' },{ value: 'media', label: 'Média (Novelas/Séries)', desc: '40" a 43"' },{ value: 'grande', label: 'Grande (Sala de TV)', desc: '50"+ (A copa é a sala de TV)' }]} />
         </Section>
 
-        <Section icon={Trash2} title="Técnica & Organização" subtitle="Lixo, louça e itens operacionais" isOpen={sections.funcional} toggle={() => toggleSection('funcional')}>
+        <Section id="section-funcional" hasMissing={missingFields.some(k => ['lixeira','escorredor'].includes(k))} icon={Trash2} title="Técnica & Organização" subtitle="Lixo, louça e itens operacionais" isOpen={sections.funcional} toggle={() => toggleSection('funcional')}>
           <RadioGroup label="12. Lixeiras" selected={formData.lixeira} onChange={(val) => setFormData({...formData, lixeira: val})} options={[{ value: 'embutir', label: 'De embutir na bancada', desc: 'Tampa inox rente à pedra' },{ value: 'oculta', label: 'Oculta no armário', desc: 'Gavetão com baldes internos' },{ value: 'piso', label: 'Lixeira de Piso', desc: 'Modelo bonito de pedal externo' }]} />
 
           <RadioGroup label="13. Escorredor de Louças" selected={formData.escorredor} onChange={(val) => setFormData({...formData, escorredor: val})} options={[{ value: 'calha', label: 'Calha Úmida', desc: 'Canal equipado esculpido na pedra/inox' },{ value: 'oculto', label: 'Aéreo Oculto', desc: 'Dentro do armário acima da pia' },{ value: 'bancada', label: 'Tradicional de Bancada', desc: 'Móvel solto' }]} />
         </Section>
 
-        <Section icon={Zap} title="Conforto & Automação" subtitle="Conforto, luz e automação" isOpen={sections.tech} toggle={() => toggleSection('tech')}>
+        <Section id="section-tech" hasMissing={missingFields.some(k => ['janelas','iluminacao','automacao'].includes(k))} icon={Zap} title="Conforto & Automação" subtitle="Conforto, luz e automação" isOpen={sections.tech} toggle={() => toggleSection('tech')}>
            <RadioGroup label="14. Tratamento das Janelas" selected={formData.janelas} onChange={(val) => setFormData({...formData, janelas: val})} layout="grid" options={[{ value: 'sem', label: 'Sem cortinas', desc: 'Vista livre / Vidro limpo' },{ value: 'solar', label: 'Persiana Tela Solar', desc: 'Bloqueia calor, mantém visão externa' },{ value: 'horizontal', label: 'Persiana Horizontal', desc: 'Lâminas (Alumínio ou Madeira)' },{ value: 'tecido', label: 'Cortina de Tecido', desc: 'Estilo clássico (Cuidado c/ gordura)' }]} />
 
           <CheckboxGroup label="15. Cenários de Iluminação (Selecione todos desejados)" selected={formData.iluminacao} onChange={(val) => setFormData({...formData, iluminacao: val})} options={[{ value: 'geral', label: 'Luz Geral Intensa', desc: 'Painéis LED, foco em limpeza/trabalho' },{ value: 'indireta', label: 'Luz Indireta / Cênica', desc: 'Fitas LED em sancas/armários (Aconchego)' },{ value: 'trabalho', label: 'Luz de Trabalho', desc: 'Spots sobre a bancada de corte' },{ value: 'pendente', label: 'Pendentes Decorativos', desc: 'Sobre mesa/balcão' }]} />
@@ -323,6 +329,7 @@ export default function DeepDiveBriefing() {
           </div>
           <p style={{marginTop:12, fontSize:12}} className="text-slate-400">Preencha todos os campos antes de gerar o PDF ou exportar os dados.</p>
         </div>
+        <MissingModal open={modalOpen} missing={modalItems} onClose={closeModal} onJump={(id) => { handleJumpTo(id); }} />
 
       </div>
     </div>
