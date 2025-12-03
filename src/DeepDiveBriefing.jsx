@@ -208,12 +208,35 @@ export default function DeepDiveBriefing() {
   const [modalItems, setModalItems] = useState([]);
 
   const handleJumpTo = (selectorId) => {
-    const el = document.getElementById(selectorId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      const focusable = el.querySelector && el.querySelector('input, textarea, button, [tabindex]');
-      if (focusable && typeof focusable.focus === 'function') focusable.focus();
+    // if selectorId targets a section, ensure that section is open first
+    let sectionKey = null;
+    if (selectorId && selectorId.startsWith('section-')) sectionKey = selectorId.replace('section-', '');
+
+    const doScroll = () => {
+      const el = document.getElementById(selectorId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const focusable = el.querySelector && el.querySelector('input, textarea, button, [tabindex]');
+        if (focusable && typeof focusable.focus === 'function') focusable.focus();
+        // add a temporary highlight to draw attention
+        try {
+          el.classList.add('jump-highlight');
+          setTimeout(() => el.classList.remove('jump-highlight'), 1200);
+        } catch(e) {}
+      }
+    };
+
+    if (sectionKey) {
+      const isOpen = sections[sectionKey];
+      if (!isOpen) {
+        // open section then scroll after layout updates
+        setSections(prev => ({ ...prev, [sectionKey]: true }));
+        setTimeout(doScroll, 140);
+        return;
+      }
     }
+
+    doScroll();
   };
 
   const closeModal = () => {
