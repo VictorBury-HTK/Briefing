@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { 
   Printer, Save, Check, Circle, ChefHat, 
   Palette, Armchair, Trash2, Zap, Image as ImageIcon, 
-  ChevronDown, ChevronUp, Coffee, Sun 
+  ChevronDown, ChevronUp, Coffee, Sun, Layout 
 } from 'lucide-react';
 
 import imgDark from '../img/Dark-Moody.jpeg';
@@ -138,6 +138,10 @@ export default function DeepDiveBriefing() {
         <header className="header-content">
           <div className="header-top">
             <div>
+              <div className="flex items-center gap-2 mb-2 text-blue-400">
+                <Layout size={20} />
+                <span className="text-xs font-bold tracking-widest uppercase">sambaqui arquitetura</span>
+              </div>
               <h1 className="header-title">BRIEFING <strong>DEEP DIVE</strong></h1>
               <p className="header-sub">Detalhamento Técnico & Estético para Cozinha</p>
             </div>
