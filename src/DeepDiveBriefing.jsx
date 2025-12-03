@@ -6,12 +6,14 @@ import {
 } from 'lucide-react';
 
 const styles = [
-  { id: 'minimalista', title: 'Minimalista Pura', desc: 'Branco total ou cinza, sem puxadores, eletros ocultos, iluminação difusa.', img: '/img/Pedra-exotica-minimalista.jpeg' },
-  { id: 'industrial', title: 'Industrial Chic', desc: 'Cimento queimado, serralheria preta, estantes abertas, tubulação aparente.', img: '/img/Industrial.jpeg' },
-  { id: 'contemporaneo', title: 'Contemporânea Natural', desc: 'Muita madeira, plantas, tons de pedra natural, aconchegante, luz quente.', img: '/img/Contemporanea.JPG' },
-  { id: 'classico', title: 'Clássica / Americana', desc: 'Portas com molduras (shaker), puxadores concha, mármore, elegância atemporal.', img: '/img/Classica.jpeg' },
-  { id: 'dark', title: 'Dark & Moody', desc: 'Armários pretos ou grafite, madeira escura, iluminação dramática.', img: '/img/Dark-Moody.jpeg' },
-  { id: 'colorido', title: 'Colorida & Criativa', desc: 'Marcenaria em verde, azul ou terracota. Personalidade forte.', img: '/img/Cor.jpeg' }
+  { id: 'dark-moody', title: 'Dark moody', desc: 'Armários pretos ou grafite, madeira escura, iluminação dramática.', img: '/img/Dark-Moody.jpeg' },
+  { id: 'industrial', title: 'Industrial', desc: 'Cimento queimado, serralheria preta, estantes abertas, tubulação aparente.', img: '/img/Industrial.jpeg' },
+  { id: 'contemporanea', title: 'Contemporânea', desc: 'Muita madeira, plantas, tons de pedra natural, aconchegante, luz quente.', img: '/img/Contemporanea.JPG' },
+  { id: 'classica', title: 'Clássica', desc: 'Portas com molduras (shaker), puxadores concha, mármore, elegância atemporal.', img: '/img/Classica.jpeg' },
+  { id: 'pedra-exotica-e-cor', title: 'Pedra exótica e cor', desc: 'Veios marcantes e mistura de cor.', img: '/img/Pedra-exotica-e-cor.jpeg' },
+  { id: 'somente-cor', title: 'Somente cor', desc: 'Somente cor (paleta sólida).', img: '/img/Cor.jpeg' },
+  { id: 'pedra-exotica-minimalista', title: 'Pedra exótica minimalista', desc: 'Exótica com estética minimalista.', img: '/img/Pedra-exotica-minimalista.jpeg' },
+  { id: 'pedra-exotica-contemporanea', title: 'Pedra exótica contemporânea', desc: 'Exótica com toque contemporâneo.', img: '/img/Pedra-exotica-contemporanea.jpeg' }
 ];
 
 const Section = ({ icon: Icon, title, subtitle, isOpen, toggle, children }) => (
